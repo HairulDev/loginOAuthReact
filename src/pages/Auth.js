@@ -179,7 +179,7 @@ export default function SignUp() {
   const googleSuccess = async (res) => {
     const result = res?.profileObj;
     const token = res?.tokenId;
-
+    console.log('Google Sign In res', res);
     try {
       dispatch({ type: AUTH, data: { result, token } });
 
@@ -189,7 +189,7 @@ export default function SignUp() {
     }
   };
 
-  const googleError = () => console.log('Google Sign In was unsuccessful. Try again later');
+  const googleError = (error) => console.log('Google Sign In was unsuccessful. Try again later', error);
 
 
 
@@ -350,7 +350,7 @@ export default function SignUp() {
                 </Button>
               )}
               <GoogleLogin
-                clientId="27480440896-lf3kal9654sqh0acbqk361bibe4dsrhf.apps.googleusercontent.com"
+                clientId="849821171640-b79b8j25ccc6of0av318hbi0iufkvu87.apps.googleusercontent.com"
                 render={(renderProps) => (
                   <Button color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Icon />} variant="contained">
                     Google Sign In
