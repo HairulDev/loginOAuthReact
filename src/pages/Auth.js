@@ -28,6 +28,11 @@ import Icon from "../pages/icon";
 import GoogleLogin from "react-google-login";
 import { AUTH } from "../constants/actionTypes";
 
+
+const clientId = "849821171640-b79b8j25ccc6of0av318hbi0iufkvu87.apps.googleusercontent.com"
+const { gapi } = require("gapi-script");
+
+
 const theme = createTheme();
 
 export default function SignUp() {
@@ -176,21 +181,40 @@ export default function SignUp() {
     setAgree(event.target.checked);
   };
 
-  const googleSuccess = async (res) => {
+
+  useEffect(() => {
+    function start() {
+      gapi.client.init({
+        clientId: clientId,
+        scope: ""
+      })
+    }
+    gapi.load('client:auth2', start)
+  }, []);
+
+
+  const onSuccess = async (res) => {
     const result = res?.profileObj;
     const token = res?.tokenId;
     console.log('Google Sign In res', res);
     try {
       dispatch({ type: AUTH, data: { result, token } });
-
       history.push('/');
     } catch (error) {
       console.log(error);
     }
   };
 
-  const googleError = (error) => console.log('Google Sign In was unsuccessful. Try again later', error);
+  const onFailure = (error) => console.log('Google Sign In was unsuccessful. Try again later', error);
 
+  const onSignIn = async (googleUser) => {
+    var profile = googleUser.getBasicProfile();
+    console.log('googleUser: ' + googleUser); // Do not send to your backend! Use an ID token instead.
+    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    console.log('Name: ' + profile.getName());
+    console.log('Image URL: ' + profile.getImageUrl());
+    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+  }
 
 
   return (
@@ -349,17 +373,43 @@ export default function SignUp() {
                   {isSignup ? "Sign Up" : "Sign In"}
                 </Button>
               )}
+
+
               <GoogleLogin
-                clientId="849821171640-b79b8j25ccc6of0av318hbi0iufkvu87.apps.googleusercontent.com"
+                clientId={clientId}
                 render={(renderProps) => (
                   <Button color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Icon />} variant="contained">
                     Google Sign In
                   </Button>
                 )}
-                onSuccess={googleSuccess}
-                onFailure={googleError}
+                onSuccess={onSuccess}
+                onFailure={onFailure}
                 cookiePolicy="single_host_origin"
               />
+
+
+              {/* <Button class="g-signin2" data-onsuccess="onSignIn"
+                onSuccess={onSignIn}
+                onFailure={onFailure}
+                onClick={onSignIn}
+              >
+                Google</Button> */}
+
+              {/* 
+              <GoogleLogin
+                clientId="849821171640-b79b8j25ccc6of0av318hbi0iufkvu87.apps.googleusercontent.com"
+                class="g-signin2" data-onsuccess="onSignIn"
+                render={(renderProps) => (
+                  <Button color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Icon />} variant="contained">
+                    Google Sign In
+                  </Button>
+                )}
+                onSuccess={onSuccess}
+                onFailure={onFailure}
+                cookiePolicy={'single_host_origin'}
+              /> */}
+
+
               <Grid container justifyContent="flex-end">
                 <Grid item xs={12} sm={6} textAlign='left'>
                   <Typography variant="subtitle1" onClick={switchMode}>
