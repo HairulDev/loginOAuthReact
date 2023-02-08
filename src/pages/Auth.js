@@ -57,10 +57,6 @@ export default function SignUp() {
   const [errorPasswordMatch, setErrorMatch] = useState("");
   const [errorPasswordValidated, setErrorValidated] = useState("");
 
-  const [passwordName, setPasswordName] = useState("");
-  const [passwordValue, setPasswordValue] = useState("");
-  const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
-
 
   const switchMode = () => {
     setForm(initialState);
@@ -180,8 +176,15 @@ export default function SignUp() {
     setAgree(event.target.checked);
   };
 
-
-
+  useEffect(() => {
+    function start() {
+      gapi.client.init({
+        clientId: clientId,
+        scope: ""
+      })
+    }
+    gapi.load('client:auth2', start)
+  }, []);
 
   const onSuccess = async (res) => {
     const result = res?.profileObj;
