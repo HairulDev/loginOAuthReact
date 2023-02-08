@@ -350,7 +350,7 @@ export default function SignUp() {
                 </Button>
               )}
               <GoogleLogin
-                clientId="564033717568-bu2nr1l9h31bhk9bff4pqbenvvoju3oq.apps.googleusercontent.com"
+                clientId="27480440896-lf3kal9654sqh0acbqk361bibe4dsrhf.apps.googleusercontent.com"
                 render={(renderProps) => (
                   <Button color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Icon />} variant="contained">
                     Google Sign In
