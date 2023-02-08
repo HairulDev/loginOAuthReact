@@ -43,7 +43,6 @@ export default function LandingPage() {
       <MostPicked
         data={dataLandingPage?.mostPicked}
       />
-      <Footer />
     </Container>
   );
 }

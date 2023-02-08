@@ -7,7 +7,6 @@ import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -21,17 +20,17 @@ import { signin, signup } from "../store/actions/auth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Card } from "@mui/material";
-import decode from "jwt-decode";
 
 import Input from './Input';
 import Icon from "../pages/icon";
-import GoogleLogin from "react-google-login";
 import { AUTH } from "../constants/actionTypes";
 
+import { gapi } from "gapi-script";
+import GoogleLogin from "react-google-login";
+import FacebookLogin from 'react-facebook-login';
 
 const clientId = "849821171640-b79b8j25ccc6of0av318hbi0iufkvu87.apps.googleusercontent.com"
-const { gapi } = require("gapi-script");
-
+const appId = "2294348017413923";
 
 const theme = createTheme();
 
@@ -182,15 +181,6 @@ export default function SignUp() {
   };
 
 
-  useEffect(() => {
-    function start() {
-      gapi.client.init({
-        clientId: clientId,
-        scope: ""
-      })
-    }
-    gapi.load('client:auth2', start)
-  }, []);
 
 
   const onSuccess = async (res) => {
@@ -207,15 +197,25 @@ export default function SignUp() {
 
   const onFailure = (error) => console.log('Google Sign In was unsuccessful. Try again later', error);
 
-  const onSignIn = async (googleUser) => {
-    var profile = googleUser.getBasicProfile();
-    console.log('googleUser: ' + googleUser); // Do not send to your backend! Use an ID token instead.
-    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    console.log('Name: ' + profile.getName());
-    console.log('Image URL: ' + profile.getImageUrl());
-    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-  }
 
+  const [auth, setAuth] = useState({
+    isAuthenticated: false,
+    userID: '',
+    name: '',
+    email: '',
+    picture: ''
+  });
+
+  const responseFacebook = response => {
+    console.log(response);
+    setAuth({
+      isAuthenticated: true,
+      userID: response.userID,
+      name: response.name,
+      email: response.email,
+      picture: response.picture.data.url
+    });
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -352,15 +352,36 @@ export default function SignUp() {
                 )}
               </Grid>
               {agree || !isSignup ? (
-                <Button
-                  onClick={handleSubmit}
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  {isSignup ? "Sign Up" : "Sign In"}
-                </Button>
+                <>
+                  <Button
+                    onClick={handleSubmit}
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    {isSignup ? "Sign Up" : "Sign In"}
+                  </Button>
+                  <GoogleLogin
+                    clientId={clientId}
+                    render={(renderProps) => (
+                      <Button color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Icon />} variant="contained">
+                        Google Sign In
+                      </Button>
+                    )}
+                    onSuccess={onSuccess}
+                    onFailure={onFailure}
+                    cookiePolicy="single_host_origin"
+                  />
+
+                  <FacebookLogin
+                    appId={appId}
+                    autoLoad={true}
+                    fields="name,email,picture"
+                    onClick={responseFacebook}
+                    callback={responseFacebook}
+                  />
+                </>
               ) : (
                 <Button
                   onClick={handleSubmit}
@@ -373,43 +394,6 @@ export default function SignUp() {
                   {isSignup ? "Sign Up" : "Sign In"}
                 </Button>
               )}
-
-
-              <GoogleLogin
-                clientId={clientId}
-                render={(renderProps) => (
-                  <Button color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Icon />} variant="contained">
-                    Google Sign In
-                  </Button>
-                )}
-                onSuccess={onSuccess}
-                onFailure={onFailure}
-                cookiePolicy="single_host_origin"
-              />
-
-
-              {/* <Button class="g-signin2" data-onsuccess="onSignIn"
-                onSuccess={onSignIn}
-                onFailure={onFailure}
-                onClick={onSignIn}
-              >
-                Google</Button> */}
-
-              {/* 
-              <GoogleLogin
-                clientId="849821171640-b79b8j25ccc6of0av318hbi0iufkvu87.apps.googleusercontent.com"
-                class="g-signin2" data-onsuccess="onSignIn"
-                render={(renderProps) => (
-                  <Button color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Icon />} variant="contained">
-                    Google Sign In
-                  </Button>
-                )}
-                onSuccess={onSuccess}
-                onFailure={onFailure}
-                cookiePolicy={'single_host_origin'}
-              /> */}
-
-
               <Grid container justifyContent="flex-end">
                 <Grid item xs={12} sm={6} textAlign='left'>
                   <Typography variant="subtitle1" onClick={switchMode}>

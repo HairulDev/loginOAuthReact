@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import Fade from "react-reveal/Fade";
 import decode from "jwt-decode";
 import { LOGOUT } from "../constants/actionTypes";
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import AdbIcon from '@mui/icons-material/Adb';
+import LogoutTwoToneIcon from '@mui/icons-material/LogoutTwoTone';
+import LoginTwoToneIcon from '@mui/icons-material/LoginTwoTone';
 
-import BrandIcon from "parts/IconText";
-import { Button } from "@mui/material";
+const pages = ['Products', 'Pricing', 'Blog'];
 
 const Header = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -19,6 +31,9 @@ const Header = () => {
     history.push('/auth');
     setUser(null);
   };
+  const login = () => {
+    history.push('/auth');
+  };
 
   useEffect(() => {
     const token = user?.token;
@@ -29,43 +44,111 @@ const Header = () => {
     }
   }, [location]);
 
-  console.log("user:", (user));
   return (
-    <Fade>
-      <header className="spacing-sm">
-        <nav className="navbar navbar-expand-lg navbar-light">
-          <BrandIcon />
-          <div className="collapse navbar-collapse">
-            <ul className="navbar-nav ml-auto">
-              <li className={`nav-item dropdown`}>
-                {user ? (
-                  <div className="navbar-nav mr-auto">
-                    {" "}
-                    <img
-                      className="img rounded mx-auto d-block"
-                      style={{ height: 40 }}
-                      src={`https://kalbarvacation.s3.ap-southeast-1.amazonaws.com/token/${user?.file}`}
-                    />
-                    <span className="navbar-nav mr-5">
-                      &nbsp; Hi there, {user?.name}
-                    </span>
-                    <Button
-                      variant='outlined'
-                      onClick={logout}
-                    >
-                      Logout
-                    </Button>
-                  </div>
-                ) : (
-                  <Link to="/auth" >Sign In</Link>
-                )}
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </header>
-    </Fade>
-  );
-};
+    <AppBar position="static">
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <Avatar src="https://aikerja.com/wp-content/uploads/job-manager-uploads/company_logo/2021/02/AVL_logo-2.png" />
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              ml: 2,
+              mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            AVL
+          </Typography>
 
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              sx={{
+                display: { xs: 'block', md: 'none' },
+              }}
+            >
+              {pages.map((page) => (
+                <MenuItem key={page}>
+                  <Typography textAlign="center">{page}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            href=""
+            sx={{
+              mr: 2,
+              display: { xs: 'flex', md: 'none' },
+              flexGrow: 1,
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            AVL
+          </Typography>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            {pages.map((page) => (
+              <Button
+                key={page}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                {page}
+              </Button>
+            ))}
+          </Box>
+          <Box sx={{ flexGrow: 0 }}>
+            {user ? (
+              <>
+                <IconButton sx={{ p: 0, mr: 2 }}>
+                  {user.given_name ? (
+                    <Avatar alt={user?.name} src={user?.picture} />
+                  ) : (
+                    <Avatar alt={user?.name} src={`https://kalbarvacation.s3.ap-southeast-1.amazonaws.com/user/${user?.picture}`} />
+                  )}
+                </IconButton>
+                <LogoutTwoToneIcon onClick={logout}></LogoutTwoToneIcon>
+              </>
+            ) : (
+              <LoginTwoToneIcon onClick={login}></LoginTwoToneIcon>
+            )}
+
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
+}
 export default Header;
