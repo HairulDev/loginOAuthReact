@@ -30,7 +30,7 @@ import GoogleLogin from "react-google-login";
 import FacebookLogin from 'react-facebook-login';
 
 const clientId = "849821171640-b79b8j25ccc6of0av318hbi0iufkvu87.apps.googleusercontent.com"
-const appId = "2294348017413923";
+const appId = "716059569917686";
 
 const theme = createTheme();
 
@@ -189,7 +189,6 @@ export default function SignUp() {
   const onSuccess = async (res) => {
     const result = res?.profileObj;
     const token = res?.tokenId;
-    console.log('Google Sign In res', res);
     try {
       dispatch({ type: AUTH, data: { result, token } });
       history.push('/');
@@ -198,27 +197,23 @@ export default function SignUp() {
     }
   };
 
-  const onFailure = (error) => console.log('Google Sign In was unsuccessful. Try again later', error);
+  const onFailure = (error) => console.log('Google Sign In was unsuccessful', error);
 
-
-  const [auth, setAuth] = useState({
-    isAuthenticated: false,
-    userID: '',
-    name: '',
-    email: '',
-    picture: ''
-  });
 
   const responseFacebook = response => {
-    console.log(response);
-    setAuth({
-      isAuthenticated: true,
-      userID: response.userID,
-      name: response.name,
-      email: response.email,
-      picture: response.picture.data.url
-    });
+    const name = response?.name;
+    const imageUrl = response?.picture.data.url
+    const result = {
+      name, imageUrl
+    }
+    try {
+      dispatch({ type: AUTH, data: { result } });
+      history.push('/');
+    } catch (error) {
+      console.log(error);
+    }
   };
+
 
   return (
     <ThemeProvider theme={theme}>

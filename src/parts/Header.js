@@ -22,6 +22,7 @@ const pages = ['Products', 'Pricing', 'Blog'];
 
 const Header = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+  const [token, setToken] = useState();
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
@@ -30,6 +31,7 @@ const Header = () => {
     dispatch({ type: LOGOUT });
     history.push('/auth');
     setUser(null);
+    setToken(null);
   };
   const login = () => {
     history.push('/auth');
@@ -39,7 +41,7 @@ const Header = () => {
     const token = user?.token;
     if (token) {
       const decodedToken = decode(token);
-      setUser(decodedToken);
+      setToken(decodedToken);
       if (decodedToken.exp * 1000 < new Date().getTime()) logout();
     }
   }, [location]);
@@ -133,10 +135,10 @@ const Header = () => {
             {user ? (
               <>
                 <IconButton sx={{ p: 0, mr: 2 }}>
-                  {user.given_name ? (
-                    <Avatar alt={user?.name} src={user?.picture} />
+                  {user?.result.user_id ? (
+                    <Avatar alt={user?.result.name} src={`https://kalbarvacation.s3.ap-southeast-1.amazonaws.com/user/${user?.result.imageUrl}`} />
                   ) : (
-                    <Avatar alt={user?.name} src={`https://kalbarvacation.s3.ap-southeast-1.amazonaws.com/user/${user?.picture}`} />
+                    <Avatar alt={user?.result.name} src={user?.result.imageUrl} />
                   )}
                 </IconButton>
                 <LogoutTwoToneIcon onClick={logout}></LogoutTwoToneIcon>

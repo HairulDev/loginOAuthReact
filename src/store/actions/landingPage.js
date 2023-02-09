@@ -10,7 +10,6 @@ export const getAllLandingPage =
     API.get(`https://kalbarvacation-be.vercel.app/v1/customer/landing-page`)
       .then((response) => {
         const resAPI = response.data;
-        console.log("resAPI=>", resAPI);
         dispatch({
           type: FETCH_PAGE,
           payload: resAPI,

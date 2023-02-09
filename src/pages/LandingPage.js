@@ -33,16 +33,15 @@ export default function LandingPage() {
   }, [dataLandingPageReducerAll]);
 
 
-  console.log("dataLandingPage ", dataLandingPage);
 
   return (
     <Container spacing={2}>
       <Header ></Header>
       <ToastContainer autoClose={8000} />
       <Hero data={dataLandingPage.hero} />
-      <MostPicked
+      {/* <MostPicked
         data={dataLandingPage?.mostPicked}
-      />
+      /> */}
     </Container>
   );
 }

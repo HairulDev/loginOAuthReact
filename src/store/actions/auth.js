@@ -6,11 +6,12 @@ const API = axios.create({ baseURL: process.env.REACT_APP_HOST });
 export const signin = (formData, successCB, failedCB) => async (dispatch) => {
   API.post("/v1/auth/signin", formData)
     .then((response) => {
+      console.log("response signin:", response);
+      const result = response.data.result;
       const token = response.data.token;
-      const foto = response.data.foto;
       const data = {
+        result,
         token,
-        foto,
       };
       dispatch({ type: AUTH, data });
       return successCB && successCB(response);
