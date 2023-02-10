@@ -1,13 +1,8 @@
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -21,9 +16,9 @@ import { changepassword } from "../../store/actions/auth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Card } from "@mui/material";
-import decode from "jwt-decode";
 
-import Input from '../Input';
+import Input from './Input';
+import { toastProperties } from "../../utils/toastProperties"
 
 const theme = createTheme();
 
@@ -52,13 +47,7 @@ export default function ResetPassword() {
         form,
         (res) => {
           toast.success(res?.data?.message, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
+            toastProperties
           });
           history.push("/auth");
         },
@@ -67,13 +56,7 @@ export default function ResetPassword() {
             error?.response?.data?.message ||
             "You dont have Authorized networks",
             {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
+              toastProperties
             }
           );
         }

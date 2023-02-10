@@ -3,8 +3,8 @@ import { createBrowserHistory } from "history";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import LandingPage from "pages/LandingPage";
-import Auth from "pages/Auth";
-import AuthVerify from "pages/AuthVerify";
+import Auth from "pages/Auth/Auth";
+import AuthVerify from "pages/Auth/AuthVerify";
 import NotFound from "pages/404";
 import "assets/scss/style.scss";
 import ResetPassword from "pages/Auth/ResetPassword";
@@ -21,7 +21,6 @@ function App() {
   return (
     <div className="App">
       <Router history={history} basename={process.env.PUBLIC_URL}>
-        {/* <Navbar /> */}
         <Switch>
           <Route path="/" exact component={LandingPage} />
 

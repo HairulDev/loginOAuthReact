@@ -3,7 +3,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -18,7 +17,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Card } from "@mui/material";
 
-import Input from '../Input';
+import Input from './Input';
+import { toastProperties } from "../../utils/toastProperties"
 
 const theme = createTheme();
 
@@ -37,13 +37,7 @@ export default function RecoverAccount() {
         form,
         (res) => {
           toast.success(res?.data?.message, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
+            toastProperties
           });
           history.push("/auth");
         },
@@ -52,13 +46,7 @@ export default function RecoverAccount() {
             error?.response?.data?.message ||
             "You dont have Authorized networks",
             {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
+              toastProperties
             }
           );
         }

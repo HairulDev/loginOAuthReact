@@ -1,10 +1,12 @@
+import { Button } from "@mui/material";
 import React from "react";
 
-import { withRouter } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
-import Button from "elements/Button";
 
 function NotFound(props) {
+  const history = useHistory();
+
   return (
     <div className="container">
       <div
@@ -19,12 +21,10 @@ function NotFound(props) {
           </p>
           <div>
             <Button
-              className="btn mt-5"
-              type="button"
-              onClick={() => props.history.goBack()}
-              isLight
+              variant="outlined"
+              onClick={() => history.push("/")}
             >
-              Yes, bring me to safe place please
+              Yes, bring me to homepage
             </Button>
           </div>
         </div>
@@ -33,4 +33,4 @@ function NotFound(props) {
   );
 }
 
-export default withRouter(NotFound);
+export default NotFound

@@ -1,72 +1,62 @@
 import * as React from "react";
 import Fade from "react-reveal/Fade";
 
-import ImageHero from "assets/images/img-hero.jpg";
 
-import formatNumber from "utils/formatNumber";
-import LoyaltyIcon from "@mui/icons-material/Loyalty";
-import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
-import PinDropIcon from "@mui/icons-material/PinDrop";
+import OnlinePredictionIcon from '@mui/icons-material/OnlinePrediction';
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 
-import PropTypes from "prop-types";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import { Container } from "@mui/material";
-import Button from "elements/Button";
+import { Button, Container, SvgIcon } from "@mui/material";
 
 export default function Hero({ data }) {
-  function showMostPicked() {
-    window.scrollTo({
-      behavior: "smooth",
-    });
+  const handleClick = () => {
+    window.scrollTo(0, document.body.scrollHeight);
   }
 
   return (
     <Container fixed sx={{ display: "flex", mb: 5 }}>
       <Grid xs={10}>
         <CardContent sx={{ flex: 1 }}>
-          <Typography component="h2" variant="h5" sx={{ mb: 2 }}>
-            Begin your excursion journey with us
-          </Typography>
-          <Typography variant="subtitle1" paragraph>
-            We offer what you want to revel in your vacation with own circle of
-            relatives, <br />
-            Time to make every other memorable moments.
-          </Typography>
-          <Button
-            className="btn px-4"
-            hasShadow
-            isSmall
-            isPrimary
-            onClick={showMostPicked}
-          >
-            Let's go
-          </Button>
+          <Fade left>
+            <Typography component="h2" variant="h5" sx={{ mb: 2 }}>
+              All Remote Team
+            </Typography>
+            <Typography variant="subtitle1" paragraph>
+              We incubate, accelerate and implement the ideas our team develops internally.<br />
+              You can find more information about us in our AVL manual.
+            </Typography>
+            <Button
+              variant="contained"
+              onClick={handleClick}
+            >
+              Let's go
+            </Button>
+          </Fade>
           <Typography variant="subtitle2" color="primary" sx={{ mt: 5 }}>
-            <LoyaltyIcon sx={{ mr: 1 }} />
-            {formatNumber(data?.travelers)} travelers &nbsp;&nbsp;
-            &nbsp;&nbsp;
-            <PhotoCameraIcon sx={{ mr: 1 }} />
-            {formatNumber(data?.treasures)} treasures &nbsp;&nbsp;
-            &nbsp;&nbsp;
-            <PinDropIcon sx={{ mr: 1 }} />
-            {formatNumber(data?.cities)} cities
+            <OnlinePredictionIcon sx={{ mr: 1 }} />
+            {data?.total_active_today} Total{data?.total_active_today > 1 ? "s" : ""} Active Today &nbsp;&nbsp;
+            <SupervisedUserCircleIcon sx={{ mr: 1 }} />
+            {data?.total_signup} Total{data?.total_signup > 1 ? "s" : ""} SignUp &nbsp;&nbsp;
           </Typography>
         </CardContent>
       </Grid>
       <Grid xs={2}>
-        <CardMedia
-          sx={{
-            maxWidth: 500,
-            maxHeight: 300,
-            borderRadius: 2,
-          }}
-          image={ImageHero}
-          component="img"
-        />
+        <Fade right>
+
+          <CardMedia
+            sx={{
+              maxWidth: 500,
+              maxHeight: 300,
+              borderRadius: 2,
+            }}
+            src="https://images.pexels.com/photos/3769118/pexels-photo-3769118.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            component="img"
+          />
+        </Fade>
       </Grid>
     </Container>
   );

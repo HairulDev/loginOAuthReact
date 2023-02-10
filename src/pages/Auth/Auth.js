@@ -10,27 +10,29 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Card } from "@mui/material";
 
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import { signin, signup } from "../store/actions/auth";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Card } from "@mui/material";
 
 import Input from './Input';
-import Icon from "../pages/icon";
-import { AUTH } from "../constants/actionTypes";
+import { AUTH } from "../../constants/actionTypes";
+import { signin, signup } from "../../store/actions/auth";
 
 import { gapi } from "gapi-script";
 import GoogleLogin from "react-google-login";
-import FacebookLogin from 'react-facebook-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import Axios from "axios";
+import FacebookTwoToneIcon from '@mui/icons-material/FacebookTwoTone';
+import GoogleIcon from '@mui/icons-material/Google';
+import { toastProperties } from "../../utils/toastProperties"
+import { fbAppId, fbSecretKey, fbToken, googleClientId } from "config/vars";
 
-const clientId = "849821171640-b79b8j25ccc6of0av318hbi0iufkvu87.apps.googleusercontent.com"
-const appId = "716059569917686";
 
 const theme = createTheme();
 
@@ -57,13 +59,19 @@ export default function SignUp() {
   const [errorPasswordMatch, setErrorMatch] = useState("");
   const [errorPasswordValidated, setErrorValidated] = useState("");
 
-
+  // switching to mode sign in or sign up
   const switchMode = () => {
     setForm(initialState);
     setIsSignup((prevIsSignup) => !prevIsSignup);
     setShowPassword(false);
   };
+  // end switching to mode sign in or sign up
 
+  const handleAgree = (event) => {
+    setAgree(event.target.checked);
+  };
+
+  //  submit form
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isSignup) {
@@ -72,13 +80,7 @@ export default function SignUp() {
           form,
           (res) => {
             toast.success(res?.data?.message, {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
+              toastProperties
             });
             history.push("/auth");
           },
@@ -87,13 +89,7 @@ export default function SignUp() {
               error?.response?.data?.message ||
               "You dont have Authorized networks",
               {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
+                toastProperties
               }
             );
           }
@@ -105,13 +101,7 @@ export default function SignUp() {
           form,
           (res) => {
             toast.success(res?.data?.message, {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
+              toastProperties
             });
             history.push("./");
           },
@@ -120,28 +110,17 @@ export default function SignUp() {
               error?.response?.data?.message ||
               "You dont have Authorized networks",
               {
-                position: "top-center",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
+                toastProperties
               }
             );
           }
         )
       );
     }
-  }; // end handleSubmit
+  }; // end submit form
 
 
-  const validatePassword = (password) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    console.log("validatePassword===>", regex.test(password));
-    return regex.test(password);
-  }
-
+  // checking match password
   useEffect(() => {
     if (form.password !== form.confirmPassword) {
       setErrorMatch("Password don't match")
@@ -149,7 +128,13 @@ export default function SignUp() {
       setErrorMatch("")
     }
   }, [form.password, form.confirmPassword]);
+  // end checking match password
 
+  // validation password
+  const validatePassword = (password) => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return regex.test(password);
+  }
 
   useEffect(() => {
     const checkPass = validatePassword(form.password);
@@ -159,27 +144,25 @@ export default function SignUp() {
       setErrorValidated("")
     }
   }, [form.password]);
+  // end validation password
 
-
+  // handle change form
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const onChangeFile = (e) => {
     const file = e.target.files[0];
-    console.log("nama file", file.name);
     setForm({ ...form, [e.target.name]: file });
     setFileName(file.name);
   };
+  // end handle change form
 
-  const handleAgree = (event) => {
-    setAgree(event.target.checked);
-  };
-
+  // OAuth Google
   useEffect(() => {
     function start() {
       gapi.client.init({
-        clientId: clientId,
+        clientId: googleClientId,
         scope: ""
       })
     }
@@ -187,7 +170,11 @@ export default function SignUp() {
   }, []);
 
   const onSuccess = async (res) => {
-    const result = res?.profileObj;
+    const result = {
+      user_id: null,
+      name: res?.profileObj.name,
+      imageUrl: res?.profileObj.imageUrl
+    }
     const token = res?.tokenId;
     try {
       dispatch({ type: AUTH, data: { result, token } });
@@ -198,22 +185,31 @@ export default function SignUp() {
   };
 
   const onFailure = (error) => console.log('Google Sign In was unsuccessful', error);
+  // end OAuth Google
 
+  // OAuth Facebook
 
-  const responseFacebook = response => {
-    const name = response?.name;
-    const imageUrl = response?.picture.data.url
+  const componentClicked = (response) => {
     const result = {
-      name, imageUrl
+      user_id: null,
+      name: response?.name,
+      imageUrl: response?.picture.data.url
     }
     try {
       dispatch({ type: AUTH, data: { result } });
+      const url = `https://graph.facebook.com/debug_token?input_token=${fbToken}&access_token=${fbAppId}|${fbSecretKey}`
+      Axios.get(url).then(function (response) {
+        console.log("APITokenFB", (response.data));
+      })
+        .catch(function (error) {
+          console.log(error);
+        });
       history.push('/');
     } catch (error) {
       console.log(error);
     }
   };
-
+  // end OAuth Facebook
 
   return (
     <ThemeProvider theme={theme}>
@@ -236,9 +232,7 @@ export default function SignUp() {
             {isSignup ? `Sign Up AVL` : `Sign In AVL`}
           </Typography>
           <Box
-            // component="form"
             noValidate
-            // onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
             <form onSubmit={handleSubmit} autoComplete="on">
@@ -356,14 +350,33 @@ export default function SignUp() {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
+                    sx={{
+                      mt: 3, mb: 2, backgroundColor: '#29b6f7',
+                      color: 'white',
+                      '&:hover': {
+                        backgroundColor: '#1d8bbc',
+                      },
+                      '&:focus': {
+                        boxShadow: '0 0 0 0.2rem rgba(0,200,255,.5)',
+                      },
+                    }}
                   >
                     {isSignup ? "Sign Up" : "Sign In"}
                   </Button>
                   <GoogleLogin
-                    clientId={clientId}
+                    clientId={googleClientId}
                     render={(renderProps) => (
-                      <Button color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Icon />} variant="contained">
+                      <Button fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<GoogleIcon />} variant="contained"
+                        sx={{
+                          mb: 2, backgroundColor: 'red',
+                          color: 'white',
+                          '&:hover': {
+                            backgroundColor: '#d00e00',
+                          },
+                          '&:focus': {
+                            boxShadow: '0 0 0 0.2rem rgba(0,200,255,.5)',
+                          },
+                        }}>
                         Google Sign In
                       </Button>
                     )}
@@ -373,11 +386,20 @@ export default function SignUp() {
                   />
 
                   <FacebookLogin
-                    appId={appId}
-                    autoLoad={true}
+                    appId={fbAppId}
+                    render={renderProps => (
+                      <Button color="primary" fullWidth onClick={renderProps.onClick} startIcon={<FacebookTwoToneIcon />} variant="contained"
+                        sx={{
+                          mb: 2
+                        }}>
+                        Facebook Sign In
+                      </Button>
+                    )}
+                    // autoLoad={true}
                     fields="name,email,picture"
-                    onClick={responseFacebook}
-                    callback={responseFacebook}
+                    scope="public_profile,email"
+                    onlogin={componentClicked}
+                    callback={componentClicked}
                   />
                 </>
               ) : (

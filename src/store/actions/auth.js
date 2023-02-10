@@ -1,4 +1,4 @@
-import { AUTH } from "../../constants/actionTypes";
+import { AUTH, LOGOUT } from "../../constants/actionTypes";
 
 import axios from "axios";
 const API = axios.create({ baseURL: process.env.REACT_APP_HOST });
@@ -44,6 +44,19 @@ export const signup = (formData, successCB, failedCB) => async (dispatch) => {
     });
 };
 
+export const signOut = (formData, successCB, failedCB) => async (dispatch) => {
+  const data = new FormData();
+  data.append("email", formData);
+  API.post("/v1/auth/signOut", data)
+    .then((response) => {
+      dispatch({ type: AUTH, data });
+      dispatch({ type: LOGOUT });
+      return successCB && successCB(response);
+    })
+    .catch((err) => {
+      return dispatch(failedCB && failedCB(err));
+    });
+};
 
 export const changepassword = (formData, successCB, failedCB) => async (dispatch) => {
   const data = new FormData();
@@ -87,7 +100,6 @@ export const resetPassword = (formData, successCB, failedCB) => async (dispatch)
 
 export const createNewPassword = (formData, { token }, successCB, failedCB) => async (dispatch) => {
   const data = new FormData();
-  console.log("createNewPassword token======>", token);
   data.append("password", formData.password);
   API.post(`/v1/auth/createNewPassword/${token}`, data)
     .then((response) => {

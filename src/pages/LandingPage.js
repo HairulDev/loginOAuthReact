@@ -1,19 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { connect } from "react-redux";
 
 import Header from "parts/Header";
 import Hero from "parts/Hero";
-import MostPicked from "parts/MostPicked";
-import Footer from "parts/Footer";
+import Users from "../parts/Users";
 
 import { getAllLandingPage } from "../store/actions/landingPage";
-import { Container, Grid, Typography } from "@mui/material";
+import { Container } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 
 export default function LandingPage() {
   const dispatch = useDispatch();
-  const { dataLandingPageReducerAll } = useSelector(
+  const { dataLandingPageReducer } = useSelector(
     (state) => state.landingPageReducer
   );
   const [dataLandingPage, setLandingPage] = useState([]);
@@ -27,21 +25,20 @@ export default function LandingPage() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (dataLandingPageReducerAll) {
-      setLandingPage(dataLandingPageReducerAll);
+    if (dataLandingPageReducer) {
+      setLandingPage(dataLandingPageReducer);
     }
-  }, [dataLandingPageReducerAll]);
-
+  }, [dataLandingPageReducer]);
 
 
   return (
     <Container spacing={2}>
       <Header ></Header>
       <ToastContainer autoClose={8000} />
-      <Hero data={dataLandingPage.hero} />
-      {/* <MostPicked
-        data={dataLandingPage?.mostPicked}
-      /> */}
+      <Hero data={dataLandingPage.dashboard} />
+      <Users
+        data={dataLandingPage?.users}
+      />
     </Container>
   );
 }

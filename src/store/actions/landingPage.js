@@ -7,7 +7,7 @@ const API = axios.create({ baseURL: process.env.REACT_APP_HOST });
 
 export const getAllLandingPage =
   (successCB, failedCB) => async (dispatch) => {
-    API.get(`https://kalbarvacation-be.vercel.app/v1/customer/landing-page`)
+    API.get(`/v1/landingPage`)
       .then((response) => {
         const resAPI = response.data;
         dispatch({

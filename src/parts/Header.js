@@ -17,6 +17,10 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import LogoutTwoToneIcon from '@mui/icons-material/LogoutTwoTone';
 import LoginTwoToneIcon from '@mui/icons-material/LoginTwoTone';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { signOut } from "store/actions/auth";
+import { toastProperties } from "../utils/toastProperties"
 
 const pages = ['Products', 'Pricing', 'Blog'];
 
@@ -27,11 +31,32 @@ const Header = () => {
   const location = useLocation();
   const history = useHistory();
 
-  const logout = () => {
+  const logout = (e) => {
+    e.preventDefault();
+    dispatch(
+      signOut(
+        user?.result?.email,
+        (res) => {
+          toast.success(res?.data?.message, {
+            toastProperties
+          });
+          setUser(null);
+          setToken(null);
+          history.push("/auth");
+        },
+        (error) => {
+          toast.error(
+            error?.response?.data?.message ||
+            "You dont have Authorized networks",
+            {
+              toastProperties
+            }
+          );
+        }
+      )
+    );
+
     dispatch({ type: LOGOUT });
-    history.push('/auth');
-    setUser(null);
-    setToken(null);
   };
   const login = () => {
     history.push('/auth');
@@ -45,6 +70,7 @@ const Header = () => {
       if (decodedToken.exp * 1000 < new Date().getTime()) logout();
     }
   }, [location]);
+
 
   return (
     <AppBar position="static">
@@ -138,7 +164,7 @@ const Header = () => {
                   {user?.result.user_id ? (
                     <Avatar alt={user?.result.name} src={`https://kalbarvacation.s3.ap-southeast-1.amazonaws.com/user/${user?.result.imageUrl}`} />
                   ) : (
-                    <Avatar alt={user?.result.name} src={user?.result.imageUrl} />
+                    <Avatar src={user?.result?.imageUrl} />
                   )}
                 </IconButton>
                 <LogoutTwoToneIcon onClick={logout}></LogoutTwoToneIcon>

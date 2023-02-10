@@ -17,7 +17,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Card } from "@mui/material";
 
-import Input from '../Input';
+import Input from './Input';
+import { toastProperties } from "../../utils/toastProperties"
 
 const theme = createTheme();
 
@@ -46,13 +47,7 @@ export default function NewPassword() {
         form, token,
         (res) => {
           toast.success(res?.data?.message, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
+            toastProperties
           });
           history.push("/auth");
         },
@@ -61,13 +56,7 @@ export default function NewPassword() {
             error?.response?.data?.message ||
             "You dont have Authorized networks",
             {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
+              toastProperties
             }
           );
         }
