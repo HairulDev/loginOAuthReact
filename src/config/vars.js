@@ -15,7 +15,7 @@ module.exports = {
   // project
   fbAppId: "716059569917686",
   fbSecretKey: "fb5b65cc31b744ac8d0e06b2a7d02d07",
-  fbToken: "72f9d58da9969a5bd4216dc7c6596c0a",
+  fbToken: "EAAKLQJxNjvYBAMIurLB8FJ8wut2Jamkcyt0KKlbVyMGVXGJLT0CEx58M77V3fZBoIV2xxZAC86qM5xqHG4S6D0thhCTVflOxuEPO9UnPL3RjNhbSKaB5Dvo9GIbdDd4pwgilQbGaOq1wv27dP7JmClx5FsDXNoZBW3alijWrp6ckb47KA6I",
 
 
   googleClientId: "849821171640-b79b8j25ccc6of0av318hbi0iufkvu87.apps.googleusercontent.com"
