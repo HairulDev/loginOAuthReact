@@ -12,9 +12,9 @@ module.exports = {
   s3BucketFolder: process.env.S3_BUCKET_FOLDER_AWS,
   regionAws: process.env.REGION_AWS,
   apiKey: process.env.REACT_APP_API_KEY,
-  fbAppId: "716059569917686",
-  fbSecretKey: "fb5b65cc31b744ac8d0e06b2a7d02d07",
-  fbToken: "EAAKLQJxNjvYBAMIurLB8FJ8wut2Jamkcyt0KKlbVyMGVXGJLT0CEx58M77V3fZBoIV2xxZAC86qM5xqHG4S6D0thhCTVflOxuEPO9UnPL3RjNhbSKaB5Dvo9GIbdDd4pwgilQbGaOq1wv27dP7JmClx5FsDXNoZBW3alijWrp6ckb47KA6I",
+  fbAppId: "747007070005461",
+  fbSecretKey: "88180ec722cb41bc1293c3da9e46f6bc",
+  fbToken: "2d64163ee6245849c25daf4d2f9765f6",
 
   googleClientId: "849821171640-b79b8j25ccc6of0av318hbi0iufkvu87.apps.googleusercontent.com"
 };
