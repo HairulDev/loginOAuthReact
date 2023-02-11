@@ -35,28 +35,28 @@ const Header = () => {
     e.preventDefault();
     dispatch({ type: LOGOUT });
     history.push('./auth');
-    // dispatch(
-    //   signOut(
-    //     user?.result?.email,
-    //     (res) => {
-    //       toast.success(res?.data?.message, {
-    //         toastProperties
-    //       });
-    //       setUser(null);
-    //       setToken(null);
-    //       history.push("/auth");
-    //     },
-    //     (error) => {
-    //       toast.error(
-    //         error?.response?.data?.message ||
-    //         "You dont have Authorized networks",
-    //         {
-    //           toastProperties
-    //         }
-    //       );
-    //     }
-    //   )
-    // );
+    dispatch(
+      signOut(
+        user?.result?.email,
+        (res) => {
+          toast.success(res?.data?.message, {
+            toastProperties
+          });
+          setUser(null);
+          setToken(null);
+          history.push("/auth");
+        },
+        (error) => {
+          toast.error(
+            error?.response?.data?.message ||
+            "You dont have Authorized networks",
+            {
+              toastProperties
+            }
+          );
+        }
+      )
+    );
   };
   const login = () => {
     history.push('./auth');
