@@ -48,8 +48,7 @@ const Header = () => {
         },
         (error) => {
           toast.error(
-            error?.response?.data?.message ||
-            "You dont have Authorized networks",
+            error?.response?.data?.message,
             {
               toastProperties
             }
