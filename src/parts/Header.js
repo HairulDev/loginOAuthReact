@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, useLocation, Link } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import Link from "@mui/material/Link";
 import { useDispatch } from "react-redux";
 import decode from "jwt-decode";
 import { LOGOUT } from "../constants/actionTypes";
@@ -34,7 +35,6 @@ const Header = () => {
   const logout = (e) => {
     e.preventDefault();
     dispatch({ type: LOGOUT });
-    history.push('auth');
     dispatch(
       signOut(
         user?.result?.email,
@@ -55,9 +55,6 @@ const Header = () => {
         }
       )
     );
-  };
-  const login = () => {
-    history.push('auth');
   };
 
   useEffect(() => {
@@ -165,16 +162,12 @@ const Header = () => {
                     <Avatar src={user?.result?.imageUrl} />
                   )}
                 </IconButton>
-                <Link href="/auth" variant="body2" style={{ textDecoration: "none", color: "white" }}>
-                  <LogoutTwoToneIcon onClick={logout}></LogoutTwoToneIcon>
-                </Link>
+                <LogoutTwoToneIcon onClick={logout}></LogoutTwoToneIcon>
               </>
             ) : (
-              <>
-                <Link href="/auth" variant="body2" style={{ textDecoration: "none", color: "white" }}>
-                  <LoginTwoToneIcon onClick={login}></LoginTwoToneIcon>
-                </Link>
-              </>
+              <Link href="/auth" variant="body2" style={{ textDecoration: "none", color: "white" }}>
+                <LoginTwoToneIcon ></LoginTwoToneIcon>
+              </Link>
             )}
 
           </Box>
