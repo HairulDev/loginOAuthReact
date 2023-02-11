@@ -165,10 +165,16 @@ const Header = () => {
                     <Avatar src={user?.result?.imageUrl} />
                   )}
                 </IconButton>
-                <LogoutTwoToneIcon onClick={logout}></LogoutTwoToneIcon>
+                <Link href="/auth" variant="body2" style={{ textDecoration: "none", color: "white" }}>
+                  <LogoutTwoToneIcon onClick={logout}></LogoutTwoToneIcon>
+                </Link>
               </>
             ) : (
-              <LoginTwoToneIcon onClick={login}></LoginTwoToneIcon>
+              <>
+                <Link href="/auth" variant="body2" style={{ textDecoration: "none", color: "white" }}>
+                  <LoginTwoToneIcon onClick={login}></LoginTwoToneIcon>
+                </Link>
+              </>
             )}
 
           </Box>
