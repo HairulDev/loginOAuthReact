@@ -42,7 +42,7 @@ const Header = () => {
           });
           setUser(null);
           setToken(null);
-          history.push("/auth");
+          history.push("./auth");
         },
         (error) => {
           toast.error(
