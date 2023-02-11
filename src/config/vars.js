@@ -13,10 +13,10 @@ module.exports = {
   regionAws: process.env.REGION_AWS,
   apiKey: process.env.REACT_APP_API_KEY,
   // project
-  fbAppId: "716059569917686",
-  fbSecretKey: "fb5b65cc31b744ac8d0e06b2a7d02d07",
+  fbAppId: "1125848001425918",
+  fbSecretKey: "9a56bfc69c2689ade2b9cd699be48662",
   fbToken: "EAAKLQJxNjvYBAMIurLB8FJ8wut2Jamkcyt0KKlbVyMGVXGJLT0CEx58M77V3fZBoIV2xxZAC86qM5xqHG4S6D0thhCTVflOxuEPO9UnPL3RjNhbSKaB5Dvo9GIbdDd4pwgilQbGaOq1wv27dP7JmClx5FsDXNoZBW3alijWrp6ckb47KA6I",
-
+  tokenFb: "ee868ebe7ccb81fa837c308c75f82f10",
 
   googleClientId: "849821171640-b79b8j25ccc6of0av318hbi0iufkvu87.apps.googleusercontent.com"
 };
