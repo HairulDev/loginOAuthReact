@@ -50,7 +50,6 @@ export const signOut = (formData, successCB, failedCB) => async (dispatch) => {
   API.post("/v1/auth/signOut", data)
     .then((response) => {
       dispatch({ type: AUTH, data });
-      dispatch({ type: LOGOUT });
       return successCB && successCB(response);
     })
     .catch((err) => {
