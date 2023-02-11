@@ -31,7 +31,8 @@ const Header = () => {
   const location = useLocation();
   const history = useHistory();
 
-  const logout = () => {
+  const logout = (e) => {
+    e.preventDefault();
     dispatch(
       signOut(
         user?.result?.email,
@@ -41,7 +42,7 @@ const Header = () => {
           });
           setUser(null);
           setToken(null);
-          history.push("./auth");
+          history.push("/");
         },
         (error) => {
           toast.error(
