@@ -58,7 +58,7 @@ const Header = () => {
     );
   };
   const login = () => {
-    history.push('./auth');
+    history.push('../auth');
   };
 
   useEffect(() => {
