@@ -34,7 +34,7 @@ const Header = () => {
   const logout = (e) => {
     e.preventDefault();
     dispatch({ type: LOGOUT });
-    history.push('./auth');
+    history.push('auth');
     dispatch(
       signOut(
         user?.result?.email,
@@ -44,7 +44,6 @@ const Header = () => {
           });
           setUser(null);
           setToken(null);
-          history.push("/auth");
         },
         (error) => {
           toast.error(
