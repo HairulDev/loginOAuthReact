@@ -24,7 +24,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={LandingPage} />
 
-          <Route path="/auth" exact component={() => (!user ? <Auth /> : <Redirect to="/" />)} />
+          <Route path="/auth" exact component={() => (!user?.result ? <Auth /> : <Redirect to="/" />)} />
           <Route path="/authVerify/:token" component={AuthVerify} />
           <Route path="/resetPassword" exact component={ResetPassword} />
           <Route path="/recoverAccount" exact component={RecoverAccount} />

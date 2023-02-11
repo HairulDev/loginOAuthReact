@@ -59,7 +59,7 @@ const Header = () => {
     dispatch({ type: LOGOUT });
   };
   const login = () => {
-    history.push('/auth');
+    history.push('./auth');
   };
 
   useEffect(() => {
