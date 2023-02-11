@@ -13,10 +13,9 @@ module.exports = {
   regionAws: process.env.REGION_AWS,
   apiKey: process.env.REACT_APP_API_KEY,
   // project
-  fbAppId: "1125848001425918",
-  fbSecretKey: "9a56bfc69c2689ade2b9cd699be48662",
-  fbToken: "EAAKLQJxNjvYBAMIurLB8FJ8wut2Jamkcyt0KKlbVyMGVXGJLT0CEx58M77V3fZBoIV2xxZAC86qM5xqHG4S6D0thhCTVflOxuEPO9UnPL3RjNhbSKaB5Dvo9GIbdDd4pwgilQbGaOq1wv27dP7JmClx5FsDXNoZBW3alijWrp6ckb47KA6I",
-  tokenFb: "ee868ebe7ccb81fa837c308c75f82f10",
+  fbAppId: "855404745690633",
+  fbSecretKey: "455d3992c05429e97d76a6e2d50c05e2",
+  fbToken: "EAAMJZCHABjgkBAD00J1xrSX7vAxb8HCdEw0dwq2CY6PI6ithqbPChNVqZBZCwPAW1g2HoPLw3PNfDOS74vHhscWYK0aO2qmH0RJcWwFhF9lZCa0LmeUwhl3w1uUeD1GdWr3Xz6TD0hlIwp8Ia7yMy0HNd7hANaLXvHGFHNHJJBTOEA9Ksooup8jgrLZBddaUZD",
 
   googleClientId: "849821171640-b79b8j25ccc6of0av318hbi0iufkvu87.apps.googleusercontent.com"
 };
