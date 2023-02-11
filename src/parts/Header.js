@@ -31,8 +31,7 @@ const Header = () => {
   const location = useLocation();
   const history = useHistory();
 
-  const logout = (e) => {
-    e.preventDefault();
+  const logout = () => {
     dispatch(
       signOut(
         user?.result?.email,
