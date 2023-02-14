@@ -6,8 +6,8 @@ const API = axios.create({ baseURL: process.env.REACT_APP_HOST });
 export const signin = (formData, successCB, failedCB) => async (dispatch) => {
   API.post("/v1/auth/signin", formData)
     .then((response) => {
-      console.log("response signin:", response);
       const result = response.data.result;
+      console.log("response signin:", result);
       const token = response.data.token;
       const data = {
         result,
@@ -49,7 +49,6 @@ export const signOut = (formData, successCB, failedCB) => async (dispatch) => {
   data.append("email", formData);
   API.post("/v1/auth/signOut", data)
     .then((response) => {
-      dispatch({ type: AUTH, data });
       return successCB && successCB(response);
     })
     .catch((err) => {

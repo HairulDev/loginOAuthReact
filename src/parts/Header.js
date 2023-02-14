@@ -32,8 +32,8 @@ const Header = () => {
   const location = useLocation();
   const history = useHistory();
 
-  const logout = (e) => {
-    e.preventDefault();
+  const logout = () => {
+    console.log("onClick logout");
     dispatch({ type: LOGOUT });
     dispatch(
       signOut(
@@ -153,11 +153,11 @@ const Header = () => {
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            {user ? (
+            {user?.result ? (
               <>
                 <IconButton sx={{ p: 0, mr: 2 }}>
-                  {user?.result.user_id ? (
-                    <Avatar alt={user?.result.name} src={`https://kalbarvacation.s3.ap-southeast-1.amazonaws.com/user/${user?.result.imageUrl}`} />
+                  {user?.result?.user_id ? (
+                    <Avatar alt={user?.result?.name} src={`https://kalbarvacation.s3.ap-southeast-1.amazonaws.com/user/${user?.result?.imageUrl}`} />
                   ) : (
                     <Avatar src={user?.result?.imageUrl} />
                   )}

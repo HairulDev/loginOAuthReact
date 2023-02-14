@@ -31,7 +31,7 @@ import Axios from "axios";
 import FacebookTwoToneIcon from '@mui/icons-material/FacebookTwoTone';
 import GoogleIcon from '@mui/icons-material/Google';
 import { toastProperties } from "../../utils/toastProperties"
-import { fbAppId, fbSecretKey, fbToken, googleClientId } from "config/vars";
+import { fbAppId, fbSecretKey, fbToken, googleClientId, } from "config/vars";
 
 
 const theme = createTheme();
@@ -48,7 +48,8 @@ export default function SignUp() {
   const [form, setForm] = useState(initialState);
   const [fileName, setFileName] = useState();
   const [isSignup, setIsSignup] = useState(false);
-  const [disable, setDisable] = useState(true);
+  const [disableSignUp, setDisableSignUp] = useState(null);
+  const [disableSignIn, setDisableSignIn] = useState(null);
   const [agree, setAgree] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -61,7 +62,6 @@ export default function SignUp() {
 
   // switching to mode sign in or sign up
   const switchMode = () => {
-    setForm(initialState);
     setIsSignup((prevIsSignup) => !prevIsSignup);
     setShowPassword(false);
   };
@@ -69,12 +69,36 @@ export default function SignUp() {
 
   const handleAgree = (event) => {
     setAgree(event.target.checked);
+    if (event.target.checked) {
+      setDisableSignUp(false);
+    } else {
+      setDisableSignUp(true);
+    }
   };
+
+  useEffect(() => {
+    if (disableSignUp === null && disableSignIn === null) {
+      setDisableSignUp(true);
+      setDisableSignIn(true);
+    }
+  }, [0]);
+
+  useEffect(() => {
+    if (form === "" || !errorPasswordMatch) {
+      setDisableSignIn(true);
+    }
+    else {
+      setDisableSignIn(false);
+    }
+  }, [form.email, form.password, form.confirmPassword]);
+
+  console.log("errorPasswordValidated ===", errorPasswordValidated);
 
   //  submit form
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isSignup) {
+      setDisableSignUp(true);
       dispatch(
         signup(
           form,
@@ -96,6 +120,7 @@ export default function SignUp() {
         )
       );
     } else {
+      setDisableSignIn(true);
       dispatch(
         signin(
           form,
@@ -118,7 +143,6 @@ export default function SignUp() {
       );
     }
   }; // end submit form
-
 
   // checking match password
   useEffect(() => {
@@ -188,7 +212,6 @@ export default function SignUp() {
   // end OAuth Google
 
   // OAuth Facebook
-
   const componentClicked = (response) => {
     const result = {
       user_id: null,
@@ -197,7 +220,7 @@ export default function SignUp() {
     }
     try {
       dispatch({ type: AUTH, data: { result } });
-      const url = `https://graph.facebook.com/debug_token?input_token=${fbToken}&access_token=${fbAppId}|${fbSecretKey}`
+      const url = `https://graph.facebook.com/debug_token?input_token=${process.env.FB_TOKEN}&access_token=${process.env.FB_APP_ID}|${process.env.FB_SECRET_KEY}`
       Axios.get(url).then(function (response) {
         console.log("APITokenFB", (response.data));
       })
@@ -343,11 +366,12 @@ export default function SignUp() {
                   </>
                 )}
               </Grid>
-              {agree || !isSignup ? (
+              {!isSignup ? (
                 <>
                   <Button
                     onClick={handleSubmit}
                     type="submit"
+                    disabled={disableSignIn}
                     fullWidth
                     variant="contained"
                     sx={{
@@ -364,7 +388,7 @@ export default function SignUp() {
                     {isSignup ? "Sign Up" : "Sign In"}
                   </Button>
                   <GoogleLogin
-                    clientId={googleClientId}
+                    clientId={process.env.GOOGLE_CLIENT_ID}
                     render={(renderProps) => (
                       <Button fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<GoogleIcon />} variant="contained"
                         sx={{
@@ -386,7 +410,7 @@ export default function SignUp() {
                   />
 
                   <FacebookLogin
-                    appId={fbAppId}
+                    appId={process.env.FB_APP_ID}
                     render={renderProps => (
                       <Button color="primary" fullWidth onClick={renderProps.onClick} startIcon={<FacebookTwoToneIcon />} variant="contained"
                         sx={{
@@ -406,7 +430,7 @@ export default function SignUp() {
                 <Button
                   onClick={handleSubmit}
                   type="submit"
-                  disabled={disable}
+                  disabled={disableSignUp}
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
