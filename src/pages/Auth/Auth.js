@@ -220,7 +220,7 @@ export default function SignUp() {
     }
     try {
       dispatch({ type: AUTH, data: { result } });
-      const url = `https://graph.facebook.com/debug_token?input_token=${process.env.FB_TOKEN}&access_token=${process.env.FB_APP_ID}|${process.env.FB_SECRET_KEY}`
+      const url = `https://graph.facebook.com/debug_token?input_token=${fbToken}&access_token=${fbAppId}|${fbSecretKey}`
       Axios.get(url).then(function (response) {
         console.log("APITokenFB", (response.data));
       })
@@ -388,7 +388,7 @@ export default function SignUp() {
                     {isSignup ? "Sign Up" : "Sign In"}
                   </Button>
                   <GoogleLogin
-                    clientId={process.env.GOOGLE_CLIENT_ID}
+                    clientId={googleClientId}
                     render={(renderProps) => (
                       <Button fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<GoogleIcon />} variant="contained"
                         sx={{
@@ -410,7 +410,7 @@ export default function SignUp() {
                   />
 
                   <FacebookLogin
-                    appId={process.env.FB_APP_ID}
+                    appId={fbAppId}
                     render={renderProps => (
                       <Button color="primary" fullWidth onClick={renderProps.onClick} startIcon={<FacebookTwoToneIcon />} variant="contained"
                         sx={{
