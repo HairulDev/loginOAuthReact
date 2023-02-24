@@ -12,6 +12,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { Button, Container, SvgIcon } from "@mui/material";
 
+
 export default function Hero({ data }) {
   const handleClick = () => {
     window.scrollTo(0, document.body.scrollHeight);

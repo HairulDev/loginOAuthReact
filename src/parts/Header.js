@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { signOut } from "store/actions/auth";
 import { toastProperties } from "../utils/toastProperties"
+import env from "config/vars";
 
 const pages = ['Products', 'Pricing', 'Blog'];
 
@@ -157,7 +158,7 @@ const Header = () => {
               <>
                 <IconButton sx={{ p: 0, mr: 2 }}>
                   {user?.result?.user_id ? (
-                    <Avatar alt={user?.result?.name} src={`https://kalbarvacation.s3.ap-southeast-1.amazonaws.com/user/${user?.result?.imageUrl}`} />
+                    <Avatar alt={user?.result?.name} src={`${env.urlBucket}/user/${user?.result?.imageUrl}`} />
                   ) : (
                     <Avatar src={user?.result?.imageUrl} />
                   )}

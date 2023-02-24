@@ -31,8 +31,7 @@ import Axios from "axios";
 import FacebookTwoToneIcon from '@mui/icons-material/FacebookTwoTone';
 import GoogleIcon from '@mui/icons-material/Google';
 import { toastProperties } from "../../utils/toastProperties"
-import { fbAppId, fbSecretKey, fbToken, googleClientId, } from "config/vars";
-
+import env from "config/vars";
 
 const theme = createTheme();
 
@@ -183,15 +182,15 @@ export default function SignUp() {
   // end handle change form
 
   // OAuth Google
-  useEffect(() => {
-    function start() {
-      gapi.client.init({
-        clientId: googleClientId,
-        scope: ""
-      })
-    }
-    gapi.load('client:auth2', start)
-  }, []);
+  // useEffect(() => {
+  //   function start() {
+  //     gapi.client.init({
+  //       clientId: env.googleClientId,
+  //       scope: ""
+  //     })
+  //   }
+  //   gapi.load('client:auth2', start)
+  // }, []);
 
   const onSuccess = async (res) => {
     const result = {
@@ -220,7 +219,7 @@ export default function SignUp() {
     }
     try {
       dispatch({ type: AUTH, data: { result } });
-      const url = `https://graph.facebook.com/debug_token?input_token=${fbToken}&access_token=${fbAppId}|${fbSecretKey}`
+      const url = `https://graph.facebook.com/debug_token?input_token=${env.fbToken}&access_token=${env.fbAppId}|${env.fbSecretKey}`
       Axios.get(url).then(function (response) {
         console.log("APITokenFB", (response.data));
       })
@@ -388,7 +387,7 @@ export default function SignUp() {
                     {isSignup ? "Sign Up" : "Sign In"}
                   </Button>
                   <GoogleLogin
-                    clientId={googleClientId}
+                    clientId={env.googleClientId}
                     render={(renderProps) => (
                       <Button fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<GoogleIcon />} variant="contained"
                         sx={{
@@ -410,7 +409,7 @@ export default function SignUp() {
                   />
 
                   <FacebookLogin
-                    appId={fbAppId}
+                    appId={env.fbAppId}
                     render={renderProps => (
                       <Button color="primary" fullWidth onClick={renderProps.onClick} startIcon={<FacebookTwoToneIcon />} variant="contained"
                         sx={{

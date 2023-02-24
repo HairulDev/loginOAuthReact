@@ -14,6 +14,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import EmailIcon from '@mui/icons-material/Email';
 
 import moment from 'moment';
+import env from "config/vars";
 
 export default function Users({ data }) {
     return (
@@ -26,7 +27,7 @@ export default function Users({ data }) {
                                 <Card sx={{ maxWidth: 250, mr: 2 }} key={index}>
                                     <CardMedia
                                         component="img"
-                                        image={`https://kalbarvacation.s3.ap-southeast-1.amazonaws.com/user/${item?.usr_file}`}
+                                        image={`${env.urlBucket}/user/${item?.usr_file}`}
                                         alt="green iguana"
                                     />
                                     <CardContent>

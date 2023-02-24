@@ -1,21 +1,21 @@
-require("dotenv").config();
 
-module.exports = {
+
+const env = {
   defaultTimeout: process.env.DEFAULT_TIMEOUT
     ? parseInt(process.env.DEFAULT_TIMEOUT, 10)
     : 25000,
   port: process.env.PORT,
   reactAppHost: process.env.REACT_APP_HOST,
-  publicUrl: process.env.PUBLIC_URL,
-  urlBucket: process.env.URL_BUCKET,
-  bucket: process.env.BUCKET,
-  s3BucketFolder: process.env.S3_BUCKET_FOLDER_AWS,
-  regionAws: process.env.REGION_AWS,
+  publicUrl: process.env.REACT_APP_PUBLIC_URL,
+  urlBucket: process.env.REACT_APP_URL_BUCKET,
+  bucket: process.env.REACT_APP_BUCKET,
+  s3BucketFolder: process.env.REACT_APP_S3_BUCKET_FOLDER_AWS,
+  regionAws: process.env.REACT_APP_REGION_AWS,
   apiKey: process.env.REACT_APP_API_KEY,
-  // project
-  fbAppId: "855404745690633",
-  fbSecretKey: "455d3992c05429e97d76a6e2d50c05e2",
-  fbToken: "EAAMJZCHABjgkBAD00J1xrSX7vAxb8HCdEw0dwq2CY6PI6ithqbPChNVqZBZCwPAW1g2HoPLw3PNfDOS74vHhscWYK0aO2qmH0RJcWwFhF9lZCa0LmeUwhl3w1uUeD1GdWr3Xz6TD0hlIwp8Ia7yMy0HNd7hANaLXvHGFHNHJJBTOEA9Ksooup8jgrLZBddaUZD",
+  fbAppId: process.env.REACT_APP_FB_ID,
+  fbSecretKey: process.env.REACT_APP_FB_SECRET_KEY,
+  fbToken: process.env.REACT_APP_FB_TOKEN,
+  googleClientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+}
 
-  googleClientId: "849821171640-b79b8j25ccc6of0av318hbi0iufkvu87.apps.googleusercontent.com"
-};
+export default env;
