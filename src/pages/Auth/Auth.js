@@ -182,15 +182,15 @@ export default function SignUp() {
   // end handle change form
 
   // OAuth Google
-  useEffect(() => {
-    function start() {
-      gapi.client.init({
-        clientId: env.googleClientId,
-        scope: ""
-      })
-    }
-    gapi.load('client:auth2', start)
-  }, []);
+  // useEffect(() => {
+  //   function start() {
+  //     gapi.client.init({
+  //       clientId: env.googleClientId,
+  //       scope: ""
+  //     })
+  //   }
+  //   gapi.load('client:auth2', start)
+  // }, []);
 
   const onSuccess = async (res) => {
     const result = {
